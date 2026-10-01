@@ -121,30 +121,30 @@ class FakeE(nn.Module):
         t_emb = t_emb.to(device)
         x = self.in_conv(x)
         # Encoder
-        e1 = self.enc_1(x, t_emb)       # 64x64, 64
-        x = self.down_1(e1)             # 32x32, 64
+        e1 = self.enc_1(x, t_emb)      
+        x = self.down_1(e1)             
 
-        e2 = self.enc_2(x, t_emb)       # 32x32, 128
-        x = self.down_2(e2)             # 16x16, 128
+        e2 = self.enc_2(x, t_emb)     
+        x = self.down_2(e2)             
 
-        e3 = self.enc_3(x, t_emb)       # 16x16, 256
-        x = self.down_3(e3)             # 8x8, 256
+        e3 = self.enc_3(x, t_emb)      
+        x = self.down_3(e3)            
 
-        e4 = self.enc_4(x, t_emb)       # 8x8, 512
+        e4 = self.enc_4(x, t_emb)       
 
         # Bottleneck
-        x = self.bottle(e4, t_emb)      # 8x8, 512
+        x = self.bottle(e4, t_emb)      
 
         # Decoder
-        x = self.up_1(x)                # 16x16, 256
-        x = torch.cat([x, e3], dim=1)   # 16x16, 512
-        x = self.dec_3(x, t_emb)        # 16x16, 256
+        x = self.up_1(x)               
+        x = torch.cat([x, e3], dim=1)  
+        x = self.dec_3(x, t_emb)        
 
-        x = self.up_2(x)                # 32x32, 128
-        x = torch.cat([x, e2], dim=1)   # 32x32, 256
-        x = self.dec_2(x, t_emb)        # 32x32, 128
+        x = self.up_2(x)               
+        x = torch.cat([x, e2], dim=1)   
+        x = self.dec_2(x, t_emb)       
 
-        x = self.up_3(x)                # 64x64, 64
-        x = torch.cat([x, e1], dim=1)   # 64x64, 128
-        x = self.dec_1(x, t_emb)        # 64x64, 64
+        x = self.up_3(x)                
+        x = torch.cat([x, e1], dim=1)   
+        x = self.dec_1(x, t_emb)       
         return self.out(x)
